@@ -1,6 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from contextlib import asynccontextmanager
 import os
 import asyncio
@@ -12,6 +13,8 @@ from app.config import get_settings
 from app.services.telegram_parser import sync_telegram_news
 
 settings = get_settings()
+
+FRONTEND_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "dist")
 
 async def sync_telegram_task():
     while True:
@@ -133,6 +136,20 @@ async def get_federation_info():
         }
     }
 
+if os.path.exists(FRONTEND_DIR):
+    app.mount("/assets", StaticFiles(directory=os.path.join(FRONTEND_DIR, "assets")), name="static_assets")
+    
+    @app.get("/logo.png")
+    async def serve_logo():
+        return FileResponse(os.path.join(FRONTEND_DIR, "logo.png"))
+    
+    @app.get("/{full_path:path}")
+    async def serve_spa(request: Request, full_path: str):
+        file_path = os.path.join(FRONTEND_DIR, full_path)
+        if os.path.isfile(file_path):
+            return FileResponse(file_path)
+        return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=5000)
