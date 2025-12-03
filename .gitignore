@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.env
+.venv
+env/
+venv/
+.pythonlibs/
+*.db
+*.sqlite3
+fsp_chuvashia.db
+
+# Node
+node_modules/
+dist/
+*.log
+npm-debug.log*
+.npm
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Uploads
+uploads/documents/*
+!uploads/documents/.gitkeep
+
+# Build
+build/
+*.egg-info/
