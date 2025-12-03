@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Newspaper, Calendar, ArrowRight, ExternalLink } from 'lucide-react'
+import { Newspaper, Calendar, ArrowRight, ExternalLink, Image } from 'lucide-react'
 import { newsAPI } from '../utils/api'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
+import SectionTitle from '../components/SectionTitle'
 
 export default function News() {
   const [news, setNews] = useState([])
@@ -52,21 +53,17 @@ export default function News() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-600 dark:text-primary-400 text-sm font-medium mb-6">
-              <Newspaper className="w-4 h-4" />
-              Новости федерации
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="gradient-text">Новости</span>
-            </h1>
-            <p className="text-dark-600 dark:text-dark-400 max-w-2xl mx-auto text-lg">
+            <SectionTitle subtitle="Новости федерации">
+              Новости
+            </SectionTitle>
+            <p className="text-dark-600 dark:text-dark-400 max-w-2xl mx-auto text-lg -mt-8 mb-4">
               Актуальные новости и события ФСП Чувашии
             </p>
             <a
               href="https://t.me/fspchuv"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-4 text-primary-600 dark:text-primary-400 hover:underline"
+              className="inline-flex items-center gap-2 text-primary-600 dark:text-primary-400 hover:underline font-medium"
             >
               Telegram-канал @fspchuv <ExternalLink className="w-4 h-4" />
             </a>
@@ -116,13 +113,24 @@ export default function News() {
                     transition={{ delay: index * 0.05 }}
                     className="card-hover overflow-hidden group"
                   >
-                    {item.image_url && (
-                      <div className="aspect-video overflow-hidden">
+                    {item.image_url ? (
+                      <div className="aspect-video overflow-hidden bg-dark-100 dark:bg-dark-800 relative">
                         <img
                           src={item.image_url}
                           alt={item.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          onError={(e) => {
+                            e.target.style.display = 'none'
+                            e.target.nextSibling.style.display = 'flex'
+                          }}
                         />
+                        <div className="hidden absolute inset-0 items-center justify-center bg-gradient-to-br from-primary-500/20 to-accent-orange/20">
+                          <Image className="w-12 h-12 text-primary-500/50" />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="aspect-video bg-gradient-to-br from-primary-500/20 to-accent-orange/20 flex items-center justify-center">
+                        <Newspaper className="w-12 h-12 text-primary-500/50" />
                       </div>
                     )}
                     <div className="p-6">

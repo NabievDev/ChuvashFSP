@@ -67,11 +67,30 @@ Orange-red-yellow gradient based on FSP Chuvashia logo colors:
 Default admin can be created through the registration link on the login page.
 
 ## Recent Changes
-- December 2025: Initial full implementation
-- Fixed DATABASE_URL conflict by using sqlite_database_url config variable
-- Implemented Telegram sync with lifespan startup and hourly background refresh
-- Added email notifications for contact form submissions via aiosmtplib
-- Updated Telegram parser for current HTML structure
+
+### December 2025 - Complete UI/UX Redesign
+- **Loading Screen Animation**: Custom logo animation with ФСП letters, glow effects, and particle system (shows on first home page visit per session)
+- **Custom Cursor**: Adaptive cursor with click animations and color adaptation, site-wide implementation
+- **Dark Theme Default**: Dark theme is now the default across all pages
+- **Designer Section Titles**: New SectionTitle component with "//" decorators, gradient underlines, and uppercase subtitles
+- **Home Page Redesign**: Provocative slogan "Код. Скорость. Победа.", single "О нас" button, animated background with circuit pattern
+- **Leadership Page**: Graph-style hierarchy layout with curved SVG branches connecting organizational levels
+- **Team Page**: Clickable sections with trophy icons, "Юниоры" badges for junior teams, graph-style vertical/horizontal connections
+- **Documents Page**: Graph-style layout with folder animations, vertical/horizontal branch connections
+- **Events Page**: Improved calendar with December 2025 test data, removed "Сегодня" label, better date highlighting
+- **Responsive Design**: All pages optimized for mobile, tablet, and desktop
+
+### Core Components Added
+- `LoadingScreen.jsx` - Animated intro screen with logo and ФСП letters
+- `CustomCursor.jsx` - Site-wide custom cursor with adaptive colors
+- `SectionTitle.jsx` - Reusable section header with designer styling
+
+### Initial Implementation
+- Full-stack React + FastAPI architecture
+- Telegram channel integration (@fspchuv) for news sync
+- Admin panel with CRUD operations
+- Contact form with email notifications
+- SQLite database with test data seeding
 
 ## Environment Variables (Optional)
 For email notifications, configure:
@@ -79,3 +98,11 @@ For email notifications, configure:
 - `SMTP_PORT` - SMTP port (default: 587)
 - `SMTP_USER` - SMTP username/email
 - `SMTP_PASSWORD` - SMTP password
+
+## Design System
+- **Primary Color**: Orange #F97316
+- **Accent Colors**: Red #EF4444, Yellow #FACC15
+- **Dark Background**: #0a0a0f (dark-950)
+- **Typography**: Bold headings, gradient text effects
+- **Animations**: Framer Motion for smooth transitions
+- **Graph-style Elements**: SVG paths with curved connections for hierarchical pages

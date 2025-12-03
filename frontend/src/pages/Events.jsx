@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Calendar, MapPin, Clock, ChevronLeft, ChevronRight, CalendarDays } from 'lucide-react'
 import { eventsAPI } from '../utils/api'
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, addMonths, subMonths, isToday } from 'date-fns'
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, addMonths, subMonths, isToday } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { cn } from '../utils/cn'
+import SectionTitle from '../components/SectionTitle'
 
 export default function Events() {
   const [events, setEvents] = useState([])
@@ -45,6 +46,11 @@ export default function Events() {
 
   const selectedEvents = selectedDate ? getEventsForDate(selectedDate) : events
 
+  const goToCurrentMonth = () => {
+    setCurrentMonth(new Date())
+    setSelectedDate(null)
+  }
+
   return (
     <div className="pt-20">
       <section className="relative py-20 overflow-hidden">
@@ -56,14 +62,10 @@ export default function Events() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-600 dark:text-primary-400 text-sm font-medium mb-6">
-              <CalendarDays className="w-4 h-4" />
-              Расписание
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="gradient-text">Календарь мероприятий</span>
-            </h1>
-            <p className="text-dark-600 dark:text-dark-400 max-w-2xl mx-auto text-lg">
+            <SectionTitle subtitle="Расписание">
+              Календарь мероприятий
+            </SectionTitle>
+            <p className="text-dark-600 dark:text-dark-400 max-w-2xl mx-auto text-lg -mt-8">
               Соревнования, турниры и события федерации спортивного программирования
             </p>
           </motion.div>
@@ -91,10 +93,11 @@ export default function Events() {
                       <ChevronLeft className="w-5 h-5" />
                     </button>
                     <button
-                      onClick={() => setCurrentMonth(new Date())}
-                      className="px-3 py-1.5 text-sm font-medium rounded-lg bg-primary-500/10 text-primary-600 dark:text-primary-400 hover:bg-primary-500/20 transition-colors"
+                      onClick={goToCurrentMonth}
+                      className="p-2 rounded-lg hover:bg-dark-100 dark:hover:bg-dark-800 transition-colors"
+                      title="Текущий месяц"
                     >
-                      Сегодня
+                      <CalendarDays className="w-5 h-5 text-primary-500" />
                     </button>
                     <button
                       onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
@@ -125,6 +128,7 @@ export default function Events() {
                     const dayEvents = getEventsForDate(day)
                     const hasEvents = dayEvents.length > 0
                     const isSelected = selectedDate && isSameDay(day, selectedDate)
+                    const isTodayDate = isToday(day)
                     
                     return (
                       <button
@@ -132,7 +136,7 @@ export default function Events() {
                         onClick={() => setSelectedDate(isSelected ? null : day)}
                         className={cn(
                           'aspect-square p-1 rounded-xl flex flex-col items-center justify-center transition-all relative',
-                          isToday(day) && 'ring-2 ring-primary-500',
+                          isTodayDate && 'ring-2 ring-primary-500',
                           isSelected && 'bg-primary-500 text-white',
                           !isSelected && hasEvents && 'bg-primary-500/10 hover:bg-primary-500/20',
                           !isSelected && !hasEvents && 'hover:bg-dark-100 dark:hover:bg-dark-800'

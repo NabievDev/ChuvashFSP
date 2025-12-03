@@ -13,6 +13,16 @@
     @apply transition-colors duration-300;
   }
 
+  * {
+    cursor: none !important;
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    * {
+      cursor: auto !important;
+    }
+  }
+
   ::selection {
     @apply bg-primary-500/30 text-primary-900 dark:text-primary-100;
   }
@@ -101,6 +111,20 @@
     @apply after:transition-all after:duration-300;
     @apply hover:after:w-full;
   }
+
+  .section-title {
+    @apply relative inline-block;
+  }
+
+  .section-title::before {
+    content: '//';
+    @apply absolute -left-8 top-1/2 -translate-y-1/2 text-primary-500 font-bold;
+  }
+
+  .section-title::after {
+    content: '';
+    @apply absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-primary-500 via-accent-orange to-accent-yellow rounded-full;
+  }
 }
 
 @layer utilities {
@@ -135,6 +159,44 @@
       linear-gradient(to right, theme('colors.dark.700 / 30%') 1px, transparent 1px),
       linear-gradient(to bottom, theme('colors.dark.700 / 30%') 1px, transparent 1px);
   }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% {
+      opacity: 0.4;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+  }
+
+  .graph-line {
+    @apply relative;
+  }
+
+  .graph-line::before {
+    content: '';
+    @apply absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary-500/50 via-accent-orange/50 to-transparent;
+  }
+
+  .graph-node {
+    @apply relative pl-12;
+  }
+
+  .graph-node::before {
+    content: '';
+    @apply absolute left-4 top-1/2 w-6 h-0.5 bg-gradient-to-r from-primary-500 to-accent-orange rounded-full;
+  }
+
+  .graph-node::after {
+    content: '';
+    @apply absolute left-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-primary-500 border-2 border-white dark:border-dark-900;
+  }
 }
 
 ::-webkit-scrollbar {
@@ -148,4 +210,24 @@
 ::-webkit-scrollbar-thumb {
   @apply bg-dark-300 dark:bg-dark-700 rounded-full;
   @apply hover:bg-primary-500 transition-colors;
+}
+
+@media (max-width: 640px) {
+  .container-custom {
+    @apply px-4;
+  }
+  
+  .section-padding {
+    @apply py-12;
+  }
+}
+
+@media (max-width: 768px) {
+  h1 {
+    @apply text-3xl;
+  }
+  
+  h2 {
+    @apply text-2xl;
+  }
 }

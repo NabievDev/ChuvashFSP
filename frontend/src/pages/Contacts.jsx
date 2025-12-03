@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useForm } from 'react-hook-form'
-import { Mail, Send, MapPin, Phone, CheckCircle, AlertCircle, Loader2 } from 'lucide-react'
+import { Mail, Send, MapPin, CheckCircle, AlertCircle, Loader2, MessageCircle } from 'lucide-react'
 import { contactAPI } from '../utils/api'
 import { cn } from '../utils/cn'
+import SectionTitle from '../components/SectionTitle'
 
 export default function Contacts() {
   const [submitStatus, setSubmitStatus] = useState(null)
@@ -43,14 +44,10 @@ export default function Contacts() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-600 dark:text-primary-400 text-sm font-medium mb-6">
-              <Mail className="w-4 h-4" />
-              Связь с федерацией
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="gradient-text">Контакты</span>
-            </h1>
-            <p className="text-dark-600 dark:text-dark-400 max-w-2xl mx-auto text-lg">
+            <SectionTitle subtitle="Связь с федерацией">
+              Контакты
+            </SectionTitle>
+            <p className="text-dark-600 dark:text-dark-400 max-w-2xl mx-auto text-lg -mt-8">
               Свяжитесь с нами для сотрудничества, вопросов или предложений
             </p>
           </motion.div>
@@ -59,22 +56,42 @@ export default function Contacts() {
 
       <section className="section-padding bg-white dark:bg-dark-950">
         <div className="container-custom">
-          <div className="grid lg:grid-cols-2 gap-12">
+          <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-2xl font-bold text-dark-900 dark:text-white mb-8">
-                Свяжитесь с нами
+              <h2 className="text-2xl font-bold text-dark-900 dark:text-white mb-8 flex items-center gap-3">
+                <span className="text-primary-500">//</span>
+                Контактная информация
               </h2>
 
               <div className="space-y-6 mb-12">
                 <a
+                  href="https://t.me/fspchuv"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-4 p-6 card-hover group"
+                >
+                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary-500 to-accent-orange flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg shadow-primary-500/20">
+                    <MessageCircle className="w-7 h-7 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-dark-900 dark:text-white mb-1 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                      Telegram
+                    </h3>
+                    <p className="text-dark-600 dark:text-dark-400">
+                      @fspchuv
+                    </p>
+                  </div>
+                </a>
+
+                <a
                   href="mailto:chuvashia@fsp-russia.ru"
                   className="flex items-start gap-4 p-6 card-hover group"
                 >
-                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary-500 to-accent-red flex items-center justify-center flex-shrink-0">
+                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-accent-orange to-accent-yellow flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg shadow-accent-orange/20">
                     <Mail className="w-7 h-7 text-white" />
                   </div>
                   <div>
@@ -83,25 +100,6 @@ export default function Contacts() {
                     </h3>
                     <p className="text-dark-600 dark:text-dark-400">
                       chuvashia@fsp-russia.ru
-                    </p>
-                  </div>
-                </a>
-
-                <a
-                  href="https://t.me/fspchuv"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-start gap-4 p-6 card-hover group"
-                >
-                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-accent-yellow to-primary-500 flex items-center justify-center flex-shrink-0">
-                    <Send className="w-7 h-7 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-dark-900 dark:text-white mb-1 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                      Telegram
-                    </h3>
-                    <p className="text-dark-600 dark:text-dark-400">
-                      @fspchuv
                     </p>
                   </div>
                 </a>
@@ -141,7 +139,8 @@ export default function Contacts() {
               viewport={{ once: true }}
             >
               <div className="card p-8">
-                <h2 className="text-2xl font-bold text-dark-900 dark:text-white mb-6">
+                <h2 className="text-2xl font-bold text-dark-900 dark:text-white mb-6 flex items-center gap-3">
+                  <span className="text-primary-500">//</span>
                   Напишите нам
                 </h2>
 
