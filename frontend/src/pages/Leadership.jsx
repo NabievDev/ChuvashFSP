@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Users, Crown, Award, User, Briefcase, FileText, Building } from 'lucide-react'
+import { Users, Crown, User } from 'lucide-react'
 import { leadershipAPI } from '../utils/api'
 import SectionTitle from '../components/SectionTitle'
 
@@ -25,15 +25,32 @@ export default function Leadership() {
   const highestBody = members.find(m => m.position.includes('Высший орган'))
   const president = members.find(m => m.position.includes('Президент') && !m.position.includes('Вице'))
   const vicePresident = members.find(m => m.position.includes('Вице-президент'))
-  const boardMembers = members.filter(m => 
-    m.position.includes('Член') || m.position.includes('Правлени')
-  )
-  const otherMembers = members.filter(m => 
-    !m.position.includes('Высший орган') && 
-    !m.position.includes('Президент') &&
-    !m.position.includes('Член') &&
-    !m.position.includes('Правлени')
-  )
+
+  const orgStructure = [
+    {
+      title: 'Общее собрание членов',
+      subtitle: 'Высший орган управления',
+      icon: Users,
+      color: 'from-indigo-500 to-indigo-600',
+      shadowColor: 'shadow-indigo-500/20'
+    },
+    {
+      title: 'Президент',
+      subtitle: president?.full_name || 'Набиев Александр Эльдарович',
+      description: 'Руководитель организации',
+      icon: Crown,
+      color: 'from-primary-500 to-accent-red',
+      shadowColor: 'shadow-primary-500/20'
+    },
+    {
+      title: 'Вице-президент',
+      subtitle: vicePresident?.full_name || 'Спиридонов Михаил Юрьевич',
+      description: 'Заместитель руководителя',
+      icon: User,
+      color: 'from-accent-orange to-accent-yellow',
+      shadowColor: 'shadow-accent-orange/20'
+    }
+  ]
 
   return (
     <div className="pt-20">
@@ -63,209 +80,56 @@ export default function Leadership() {
               <div className="w-12 h-12 border-4 border-primary-500/20 border-t-primary-500 rounded-full animate-spin" />
             </div>
           ) : (
-            <div className="max-w-6xl mx-auto">
-              <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
-                <div className="relative">
-                  <div className="absolute left-6 top-0 h-full w-0.5 bg-gradient-to-b from-indigo-500 via-indigo-400 to-indigo-300 rounded-full" />
-
-                  <div className="space-y-8 pl-16">
-                    {highestBody && (
-                      <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        className="relative"
-                      >
-                        <div className="absolute -left-[52px] top-4 flex items-center">
-                          <div className="w-3 h-3 rounded-full bg-indigo-500 border-2 border-white dark:border-dark-950 z-10" />
-                          <div className="w-10 h-0.5 bg-gradient-to-r from-indigo-500 to-transparent" />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-bold text-dark-900 dark:text-white mb-1">
-                            {highestBody.full_name}
-                          </h3>
-                          <p className="text-dark-500 dark:text-dark-400 text-sm">
-                            {highestBody.position}
-                          </p>
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {president && (
-                      <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.1 }}
-                        className="relative"
-                      >
-                        <div className="absolute -left-[52px] top-4 flex items-center">
-                          <div className="w-3 h-3 rounded-full bg-indigo-500 border-2 border-white dark:border-dark-950 z-10" />
-                          <div className="w-10 h-0.5 bg-gradient-to-r from-indigo-500 to-transparent" />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-bold text-dark-900 dark:text-white mb-1">
-                            {president.position}
-                          </h3>
-                          <p className="text-dark-500 dark:text-dark-400 text-sm">
-                            {president.full_name}
-                          </p>
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {boardMembers.length > 0 && (
-                      <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.2 }}
-                        className="relative"
-                      >
-                        <div className="absolute -left-[52px] top-4 flex items-center">
-                          <div className="w-3 h-3 rounded-full bg-indigo-500 border-2 border-white dark:border-dark-950 z-10" />
-                          <div className="w-10 h-0.5 bg-gradient-to-r from-indigo-500 to-transparent" />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-bold text-dark-900 dark:text-white mb-3">
-                            Члены правления
-                          </h3>
-                          <div className="space-y-1">
-                            {boardMembers.map((member, idx) => (
-                              <p key={member.id} className="text-dark-500 dark:text-dark-400 text-sm">
-                                {member.full_name}
-                              </p>
-                            ))}
-                          </div>
-                        </div>
-
-                      </motion.div>
-                    )}
-                  </div>
-
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
+            <div className="max-w-4xl mx-auto">
+              <div className="space-y-6">
+                {orgStructure.map((item, index) => (
+                  <motion.div
+                    key={item.title}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: 0.5 }}
-                    className="mt-20 text-xs text-dark-400 dark:text-dark-500 max-w-sm"
+                    transition={{ delay: index * 0.1 }}
+                    className={`relative p-6 rounded-2xl bg-dark-50 dark:bg-dark-800/50 border border-dark-200 dark:border-dark-700 hover:border-primary-500/30 transition-all duration-300 hover:shadow-xl ${item.shadowColor}`}
                   >
-                    Организационная структура региональной физкультурно-спортивной общественной организации «Федерация спортивного программирования»
-                  </motion.p>
-                </div>
-
-                <div className="relative">
-                  <div className="absolute right-6 top-0 h-full w-0.5 bg-gradient-to-b from-indigo-500 to-indigo-300 rounded-full" />
-
-                  <div className="space-y-8 pr-16 text-right">
-                    {vicePresident && (
-                      <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        className="relative"
-                      >
-                        <div className="absolute -right-[52px] top-4 flex items-center flex-row-reverse">
-                          <div className="w-3 h-3 rounded-full bg-indigo-500 border-2 border-white dark:border-dark-950 z-10" />
-                          <div className="w-10 h-0.5 bg-gradient-to-l from-indigo-500 to-transparent" />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-bold text-dark-900 dark:text-white mb-1">
-                            Первый Вице-Президент
+                    <div className="flex items-center gap-5">
+                      <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center shadow-lg ${item.shadowColor} flex-shrink-0`}>
+                        <item.icon className="w-7 h-7 text-white" />
+                      </div>
+                      
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-1">
+                          <span className="text-primary-500 font-mono text-sm">{String(index + 1).padStart(2, '0')}</span>
+                          <h3 className="text-xl font-bold text-dark-900 dark:text-white">
+                            {item.title}
                           </h3>
-                          <p className="text-dark-500 dark:text-dark-400 text-sm">
-                            {vicePresident.full_name}
-                          </p>
                         </div>
-                      </motion.div>
+                        <p className="text-dark-600 dark:text-dark-300 font-medium">
+                          {item.subtitle}
+                        </p>
+                        {item.description && (
+                          <p className="text-dark-500 dark:text-dark-400 text-sm mt-1">
+                            {item.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    {index < orgStructure.length - 1 && (
+                      <div className="absolute left-1/2 -bottom-6 w-0.5 h-6 bg-gradient-to-b from-dark-300 dark:from-dark-600 to-transparent" />
                     )}
-
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.1 }}
-                      className="relative"
-                    >
-                      <div className="absolute -right-[52px] top-4 flex items-center flex-row-reverse">
-                        <div className="w-3 h-3 rounded-full bg-indigo-500 border-2 border-white dark:border-dark-950 z-10" />
-                        <div className="w-10 h-0.5 bg-gradient-to-l from-indigo-500 to-transparent" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-dark-900 dark:text-white mb-1">
-                          Исполнительный директор
-                        </h3>
-                        <p className="text-dark-500 dark:text-dark-400 text-sm">
-                          {otherMembers.find(m => m.position.includes('Исполнительный'))?.full_name || 'Формируется'}
-                        </p>
-                      </div>
-                    </motion.div>
-
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.2 }}
-                      className="relative"
-                    >
-                      <div className="absolute -right-[52px] top-4 flex items-center flex-row-reverse">
-                        <div className="w-3 h-3 rounded-full bg-indigo-500 border-2 border-white dark:border-dark-950 z-10" />
-                        <div className="w-10 h-0.5 bg-gradient-to-l from-indigo-500 to-transparent" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-dark-900 dark:text-white mb-1">
-                          Административный директор
-                        </h3>
-                        <p className="text-dark-500 dark:text-dark-400 text-sm">
-                          {otherMembers.find(m => m.position.includes('Административный'))?.full_name || 'Формируется'}
-                        </p>
-                      </div>
-                    </motion.div>
-
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.3 }}
-                      className="relative"
-                    >
-                      <div className="absolute -right-[52px] top-4 flex items-center flex-row-reverse">
-                        <div className="w-3 h-3 rounded-full bg-indigo-500 border-2 border-white dark:border-dark-950 z-10" />
-                        <div className="w-10 h-0.5 bg-gradient-to-l from-indigo-500 to-transparent" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-dark-900 dark:text-white mb-1">
-                          Экспертный совет
-                        </h3>
-                        <p className="text-dark-500 dark:text-dark-400 text-sm italic">
-                          формируется
-                        </p>
-                      </div>
-                    </motion.div>
-
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.4 }}
-                      className="relative"
-                    >
-                      <div className="absolute -right-[52px] top-4 flex items-center flex-row-reverse">
-                        <div className="w-3 h-3 rounded-full bg-indigo-500 border-2 border-white dark:border-dark-950 z-10" />
-                        <div className="w-10 h-0.5 bg-gradient-to-l from-indigo-500 to-transparent" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-dark-900 dark:text-white mb-1">
-                          Попечительский совет
-                        </h3>
-                        <p className="text-dark-500 dark:text-dark-400 text-sm italic">
-                          формируется
-                        </p>
-                      </div>
-                    </motion.div>
-                  </div>
-                </div>
+                  </motion.div>
+                ))}
               </div>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5 }}
+                className="mt-12 text-center text-sm text-dark-400 dark:text-dark-500 max-w-lg mx-auto"
+              >
+                Организационная структура региональной физкультурно-спортивной общественной организации «Федерация спортивного программирования по Чувашской Республике»
+              </motion.p>
             </div>
           )}
         </div>

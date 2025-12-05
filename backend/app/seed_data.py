@@ -25,18 +25,21 @@ def seed_initial_data(db: Session):
             ),
             LeadershipMember(
                 full_name="Иванова Анна Алексеевна",
-                position="Член Федерации и Правления",
-                order=4
+                position="Член Федерации",
+                order=4,
+                is_visible=False
             ),
             LeadershipMember(
                 full_name="Константинов Михаил Романович",
-                position="Член Федерации и Правления",
-                order=5
+                position="Член Федерации",
+                order=5,
+                is_visible=False
             ),
             LeadershipMember(
                 full_name="Алексеев Юрий Витальевич",
-                position="Член Федерации и Правления",
-                order=6
+                position="Член Федерации",
+                order=6,
+                is_visible=False
             ),
         ]
         db.add_all(leadership_data)

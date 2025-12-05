@@ -8,7 +8,7 @@ export default function SectionTitle({ children, subtitle, className = '', align
       viewport={{ once: true }}
       className={`mb-12 md:mb-16 ${align === 'center' ? 'text-center' : ''} ${className}`}
     >
-      <div className={`inline-flex items-center gap-4 ${align === 'center' ? 'justify-center' : ''}`}>
+      <div className={`inline-flex items-center gap-4 ${align === 'center' ? 'justify-center w-full' : ''}`}>
         <motion.div
           className="hidden sm:block h-px w-12 bg-gradient-to-r from-transparent via-primary-500 to-accent-orange"
           initial={{ scaleX: 0 }}
@@ -17,13 +17,15 @@ export default function SectionTitle({ children, subtitle, className = '', align
           transition={{ delay: 0.2 }}
         />
         <div className="relative pb-4">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center">
             <span className="gradient-text">{children}</span>
           </h2>
           <motion.div
-            className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 rounded-full"
+            className="absolute -bottom-1 h-1 rounded-full"
             style={{
               width: '60%',
+              left: '50%',
+              transform: 'translateX(-50%)',
               background: 'linear-gradient(90deg, transparent 0%, #f97316 15%, #fb923c 50%, #fbbf24 85%, transparent 100%)',
               filter: 'blur(1px)',
               boxShadow: '0 0 12px 2px rgba(249, 115, 22, 0.4)',
@@ -34,9 +36,11 @@ export default function SectionTitle({ children, subtitle, className = '', align
             transition={{ delay: 0.3, duration: 0.6 }}
           />
           <motion.div
-            className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-0.5 rounded-full"
+            className="absolute -bottom-1 h-0.5 rounded-full"
             style={{
               width: '40%',
+              left: '50%',
+              transform: 'translateX(-50%)',
               background: 'linear-gradient(90deg, transparent 0%, #f97316 20%, #fb923c 50%, #fbbf24 80%, transparent 100%)',
             }}
             initial={{ scaleX: 0, opacity: 0 }}

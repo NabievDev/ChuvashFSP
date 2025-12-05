@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Newspaper, Calendar, ArrowRight, ExternalLink, Image } from 'lucide-react'
+import { Newspaper, Calendar, ArrowRight, ExternalLink } from 'lucide-react'
 import { newsAPI } from '../utils/api'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
@@ -111,29 +111,21 @@ export default function News() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.05 }}
-                    className="card-hover overflow-hidden group"
+                    className="card-hover overflow-hidden group flex flex-col"
                   >
-                    {item.image_url ? (
+                    {item.image_url && (
                       <div className="aspect-video overflow-hidden bg-dark-100 dark:bg-dark-800 relative">
                         <img
                           src={item.image_url}
                           alt={item.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           onError={(e) => {
-                            e.target.style.display = 'none'
-                            e.target.nextSibling.style.display = 'flex'
+                            e.target.parentElement.style.display = 'none'
                           }}
                         />
-                        <div className="hidden absolute inset-0 items-center justify-center bg-gradient-to-br from-primary-500/20 to-accent-orange/20">
-                          <Image className="w-12 h-12 text-primary-500/50" />
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="aspect-video bg-gradient-to-br from-primary-500/20 to-accent-orange/20 flex items-center justify-center">
-                        <Newspaper className="w-12 h-12 text-primary-500/50" />
                       </div>
                     )}
-                    <div className="p-6">
+                    <div className="p-6 flex-1 flex flex-col">
                       <div className="flex items-center gap-2 text-sm text-dark-500 dark:text-dark-400 mb-3">
                         <Calendar className="w-4 h-4" />
                         {format(new Date(item.published_at), 'd MMMM yyyy', { locale: ru })}
@@ -141,7 +133,7 @@ export default function News() {
                       <h2 className="text-lg font-semibold text-dark-900 dark:text-white mb-3 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                         {item.title}
                       </h2>
-                      <p className="text-dark-600 dark:text-dark-400 text-sm line-clamp-3 mb-4">
+                      <p className="text-dark-600 dark:text-dark-400 text-sm line-clamp-3 mb-4 flex-1">
                         {item.content}
                       </p>
                       <Link
